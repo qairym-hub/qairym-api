@@ -1,10 +1,10 @@
 package com.qairym.entities;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Formula;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,22 +38,32 @@ public class User {
 
     private String username;
     private String password;
+
+    private String about;
+
+    @Deprecated
+    private String location;
+
     private Date createdAt;
 
     @OneToMany(mappedBy = "author")
-    private Collection<Post<User>> posts;
+    private Collection<Post> posts;
 
-    @OneToMany(mappedBy = "owner")
-    private Collection<Group> groups;
+    @ManyToMany(
+        mappedBy = "following",
+        cascade = CascadeType.ALL
+    )
+    private Collection<User> followers;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         joinColumns = {
-            @JoinColumn(name = "user_id")
+            @JoinColumn(name = "follower_id")
         },
         inverseJoinColumns = {
-            @JoinColumn(name = "group_id")
+            @JoinColumn(name = "following_id")
         }
     )
-    private Collection<Group> subscriptions;
+    private Collection<User> following;
 }
+ 

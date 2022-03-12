@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -22,17 +23,22 @@ import lombok.ToString;
 @ToString
 @Builder
 @Data
-public class Post<T> {
+public class Post {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
     @ManyToOne
-    private T author;
+    @JoinColumn(
+        name = "author_id",
+        nullable = false
+    )
+    private User author;
 
     private String title;
     private String text;
 
     private Date createdAt;
 }
+ 
