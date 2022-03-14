@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Formula;
 
 import lombok.AllArgsConstructor;
@@ -47,6 +48,7 @@ public class User {
     private Date createdAt;
 
     @OneToMany(mappedBy = "author")
+    @JsonManagedReference
     private Collection<Post> posts;
 
     @ManyToMany(
