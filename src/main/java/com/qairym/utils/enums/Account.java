@@ -1,6 +1,6 @@
 package com.qairym.utils.enums;
 
-public enum AccountType {
-    PERSON,
+public enum Account {
+    PERSONAL,
     ORGANIZATION
 }

@@ -15,8 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Formula;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -65,5 +63,8 @@ public class User {
         }
     )
     private Collection<User> following;
+
+    @OneToMany(mappedBy = "author")
+    private Collection<Comment> comments;
 }
  
