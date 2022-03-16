@@ -4,10 +4,13 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.qairym.entities.Post;
+import com.qairym.entities.User;
 import com.qairym.repositories.PostRepository;
-
+import com.qairym.repositories.UserRepository;
 import com.qairym.utils.PostUtil;
 import com.qairym.utils.exceptions.post.PostNotFoundException;
+import com.qairym.utils.exceptions.user.UserNotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Slf4j
 public class PostService implements Servable<Post> {
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Post save(Post payload) {
@@ -33,6 +37,14 @@ public class PostService implements Servable<Post> {
     public List<Post> findAll() {
         return Lists.newArrayList(
                 this.postRepository.findAll()
+        );
+    }
+
+    public List<Post> findAllByUser(Long userId) throws UserNotFoundException {
+        User author = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Not found"));
+
+        return Lists.newArrayList(
+            this.postRepository.findAllByAuthor(author)
         );
     }
 
