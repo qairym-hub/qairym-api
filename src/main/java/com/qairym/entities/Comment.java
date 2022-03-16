@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -24,6 +26,7 @@ public class Comment {
         name = "author_id",
         nullable = false
     )
+    @JsonBackReference
     private User author;
 
     @ManyToOne
@@ -31,6 +34,7 @@ public class Comment {
         name = "post_id",
         nullable = false
     )
+    @JsonBackReference
     private Post post;
 
     @OneToMany(mappedBy = "liker")

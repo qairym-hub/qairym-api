@@ -67,6 +67,7 @@ public class User {
     private Collection<User> following;
 
     @OneToMany(mappedBy = "author")
+    @JsonManagedReference
     private Collection<Comment> comments;
 }
  
