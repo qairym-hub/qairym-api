@@ -1,11 +1,10 @@
 package com.qairym.controllers;
 
+import com.qairym.entities.User;
 import com.qairym.services.UserService;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 
@@ -18,8 +17,21 @@ public class UserController {
     @GetMapping("/")
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(
-            userService.findAll()
+                userService.findAll()
         );
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<?> save(@RequestBody User payload) {
+        try {
+            return ResponseEntity.ok(
+                    userService.save(payload)
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(
+                    e.getMessage()
+            );
+        }
     }
 
 }

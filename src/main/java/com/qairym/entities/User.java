@@ -1,7 +1,6 @@
 package com.qairym.entities;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
@@ -14,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,6 +46,7 @@ public class User {
     private Date createdAt;
 
     @OneToMany(mappedBy = "author")
+    @JsonManagedReference
     private Collection<Post> posts;
 
     @ManyToMany(
