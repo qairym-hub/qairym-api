@@ -44,7 +44,7 @@ public class Post {
         name = "author_id",
         nullable = false
     )
-    @JsonBackReference
+    @JsonBackReference(value = "user-posts")
     private User author;
 
     @OneToMany(mappedBy = "post")

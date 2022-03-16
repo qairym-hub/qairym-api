@@ -46,7 +46,7 @@ public class User {
     private Date createdAt;
 
     @OneToMany(mappedBy = "author")
-    @JsonManagedReference
+    @JsonManagedReference(value = "user-posts")
     private Collection<Post> posts;
 
     @ManyToMany(
@@ -67,7 +67,7 @@ public class User {
     private Collection<User> following;
 
     @OneToMany(mappedBy = "author")
-    @JsonManagedReference
+    @JsonManagedReference(value = "user-comments")
     private Collection<Comment> comments;
 }
  

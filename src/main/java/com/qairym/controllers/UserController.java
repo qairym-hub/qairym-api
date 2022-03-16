@@ -21,8 +21,8 @@ public class UserController {
         );
     }
 
-    @GetMapping("/find")
-    public ResponseEntity<?> findByUsername(@RequestParam String username) {
+    @GetMapping("/find/{username}")
+    public ResponseEntity<?> findByUsername(@PathVariable String username) {
         return ResponseEntity.ok(
             this.userService.findByUSername(username)
         );

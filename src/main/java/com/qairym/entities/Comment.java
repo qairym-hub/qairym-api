@@ -26,7 +26,7 @@ public class Comment {
         name = "author_id",
         nullable = false
     )
-    @JsonBackReference
+    @JsonBackReference(value = "user-comments")
     private User author;
 
     @ManyToOne
