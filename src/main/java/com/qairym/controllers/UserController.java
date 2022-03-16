@@ -12,14 +12,21 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/user")
 @AllArgsConstructor
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("/find")
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(
                 userService.findAll()
         );
     }
+
+    @GetMapping("/find")
+    public ResponseEntity<?> findByUsername(@RequestParam String username) {
+        return ResponseEntity.ok(
+            this.userService.findByUSername(username)
+        );
+    } 
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody User payload) {

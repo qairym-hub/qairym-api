@@ -44,6 +44,10 @@ public class UserService implements Servable<User> {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
+    public User findByUSername(String username) {
+        return this.userRepository.findByUsername(username);
+    }
+
     @Override
     public User update(User payload) {
         User current = this.findById(payload.getUserId());
