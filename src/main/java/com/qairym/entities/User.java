@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -40,14 +42,15 @@ public class User {
 
     private String about;
 
-    @Deprecated
-    private String location;
-
     private Date createdAt;
 
     @OneToMany(mappedBy = "author")
     @JsonManagedReference(value = "user-posts")
     private Collection<Post> posts;
+
+    @OneToMany(mappedBy = "author")
+    @JsonManagedReference(value = "user-comments")
+    private Collection<Comment> comments;
 
     @ManyToMany(
         mappedBy = "following",
@@ -66,8 +69,12 @@ public class User {
     )
     private Collection<User> following;
 
-    @OneToMany(mappedBy = "author")
-    @JsonManagedReference(value = "user-comments")
-    private Collection<Comment> comments;
+    @ManyToOne
+    @JoinColumn(
+        name = "location_id",
+        nullable = false
+    )
+    @JsonBackReference(value = "city-users")
+    private City location;
 }
  
