@@ -1,6 +1,7 @@
 package com.qairym.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.google.common.collect.Lists;
 import com.qairym.entities.User;
@@ -8,8 +9,6 @@ import com.qairym.repositories.UserRepository;
 
 import com.qairym.utils.UserUtil;
 import com.qairym.utils.annotations.TestingOnly;
-import com.qairym.utils.exceptions.user.UserAlreadyExistsException;
-import com.qairym.utils.exceptions.user.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class UserService implements Servable<User> {
     @Override
     public User save(User payload) {
         if (userRepository.existsByUsername(payload.getUsername()))
-            throw new UserAlreadyExistsException("User already exists");
+            throw new IllegalArgumentException("User already exists");
     
         if (payload.getUsername() == null || payload.getPassword() == null)
             throw new IllegalArgumentException("Inputs are null");
@@ -43,7 +42,7 @@ public class UserService implements Servable<User> {
 
     @Override
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
     }
 
     public User findByUSername(String username) {
