@@ -2,9 +2,7 @@ package com.qairym;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.qairym.entities.City;
 import com.qairym.repositories.CityRepository;
 

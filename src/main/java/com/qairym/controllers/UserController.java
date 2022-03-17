@@ -30,15 +30,9 @@ public class UserController {
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody User payload) {
-        try {
-            return ResponseEntity.ok(
-                    userService.save(payload)
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(
-                    e.getMessage()
-            );
-        }
+        return ResponseEntity.ok(
+            userService.save(payload)
+        );
     }
 
 }
