@@ -27,9 +27,10 @@ public class PostService implements Servable<Post> {
     @Override
     public Post save(Post payload) {
         log.info(payload.toString());
-        if (payload.getAuthor().getUserId() == null) {
+
+        if (payload.getAuthor().getUserId() == null)
             throw new IllegalArgumentException("Inputs are null");
-        }
+        
         log.info("Saving post: {} to the database", payload);
         return this.postRepository.save(payload);
     }
