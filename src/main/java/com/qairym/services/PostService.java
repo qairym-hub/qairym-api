@@ -8,6 +8,7 @@ import com.qairym.entities.User;
 import com.qairym.repositories.PostRepository;
 import com.qairym.repositories.UserRepository;
 import com.qairym.utils.PostUtil;
+import com.qairym.utils.annotations.TestingOnly;
 import com.qairym.utils.exceptions.post.PostNotFoundException;
 import com.qairym.utils.exceptions.user.UserNotFoundException;
 
@@ -33,6 +34,7 @@ public class PostService implements Servable<Post> {
         return this.postRepository.save(payload);
     }
 
+    @TestingOnly
     @Override
     public List<Post> findAll() {
         return Lists.newArrayList(
