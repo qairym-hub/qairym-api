@@ -1,6 +1,7 @@
 package com.qairym.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.google.common.collect.Lists;
 import com.qairym.entities.Post;
@@ -9,8 +10,6 @@ import com.qairym.repositories.PostRepository;
 import com.qairym.repositories.UserRepository;
 import com.qairym.utils.PostUtil;
 import com.qairym.utils.annotations.TestingOnly;
-import com.qairym.utils.exceptions.post.PostNotFoundException;
-import com.qairym.utils.exceptions.user.UserNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,8 +42,8 @@ public class PostService implements Servable<Post> {
         );
     }
 
-    public List<Post> findAllByUser(Long userId) throws UserNotFoundException {
-        User author = this.userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("Not found"));
+    public List<Post> findAllByUser(Long userId) {
+        User author = this.userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("Not found"));
 
         return Lists.newArrayList(
             this.postRepository.findAllByAuthor(author)
@@ -53,7 +52,7 @@ public class PostService implements Servable<Post> {
 
     @Override
     public Post findById(Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post not found"));
+        return postRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Post not found"));
     }
 
     @Override
