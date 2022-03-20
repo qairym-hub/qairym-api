@@ -34,7 +34,7 @@ public class Comment {
         name = "post_id",
         nullable = false
     )
-    @JsonBackReference
+    @JsonBackReference(value = "post-comments")
     private Post post;
 
     @OneToMany(mappedBy = "liker")

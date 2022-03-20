@@ -48,7 +48,11 @@ public class Post {
     private User author;
 
     @OneToMany(mappedBy = "post")
-    @JsonManagedReference
+    @JsonManagedReference(value = "post-comments")
     private Collection<Comment> comments;
+
+    @OneToMany(mappedBy = "post")
+    @JsonManagedReference(value = "post-likes")
+    private Collection<Like> likes;
 }
  
