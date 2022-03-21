@@ -23,10 +23,10 @@ public class UserService implements Servable<User> {
     @Override
     public User save(User payload) {
         if (userRepository.existsByUsername(payload.getUsername()))
-            throw new IllegalArgumentException("User already exists");
+            throw new IllegalArgumentException("Пользователь с таким именем уже существует.");
     
         if (payload.getUsername() == null || payload.getPassword() == null)
-            throw new IllegalArgumentException("Inputs are null");
+            throw new IllegalArgumentException("Недопустимые значения полей.");
         
         log.info("Saving user: {} to the database", payload);
         return userRepository.save(payload);
@@ -42,7 +42,7 @@ public class UserService implements Servable<User> {
 
     @Override
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Пользователь не найден."));
     }
 
     public User findByUSername(String username) {

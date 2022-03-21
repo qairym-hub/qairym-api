@@ -17,7 +17,7 @@ public class UserController {
     @GetMapping("/find")
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(
-                userService.findAll()
+            this.userService.findAll()
         );
     }
 
@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody User payload) {
         return ResponseEntity.ok(
-            userService.save(payload)
+            this.userService.save(payload)
         );
     }
 

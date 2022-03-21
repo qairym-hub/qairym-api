@@ -26,14 +26,8 @@ public class PostController {
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody Post payload) {
-        try {
-            return ResponseEntity.ok(
-                    postService.save(payload)
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(
-                    e.getMessage()
-            );
-        }
+        return ResponseEntity.ok(
+            this.postService.save(payload)
+        );
     }
 }
