@@ -16,9 +16,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import com.qairym.entities.models.UserModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,8 @@ public class User {
     private Long userId;
 
     private String username;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String about;
@@ -46,34 +49,38 @@ public class User {
     private Date createdAt;
 
     @OneToMany(mappedBy = "author")
-    @JsonManagedReference(value = "user-posts")
+    //@JsonManagedReference(value = "user-posts")
+    @JsonIgnore
     private Collection<Post> posts;
 
     @OneToMany(mappedBy = "author")
-    @JsonManagedReference(value = "user-comments")
+    //@JsonManagedReference(value = "user-comments")
+    @JsonIgnore
     private Collection<Comment> comments;
 
     @ManyToMany(
-        mappedBy = "following",
-        cascade = CascadeType.ALL
+            mappedBy = "following",
+            cascade = CascadeType.ALL
     )
+    @JsonIgnore
     private Collection<User> followers;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-        joinColumns = {
-            @JoinColumn(name = "follower_id")
-        },
-        inverseJoinColumns = {
-            @JoinColumn(name = "following_id")
-        }
+            joinColumns = {
+                    @JoinColumn(name = "follower_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "following_id")
+            }
     )
+    @JsonIgnore
     private Collection<User> following;
 
     @ManyToOne
     @JoinColumn(
-        name = "location_id",
-        nullable = false
+            name = "location_id",
+            nullable = false
     )
     @JsonBackReference(value = "city-users")
     private City location;

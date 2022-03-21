@@ -36,6 +36,6 @@ public class Like {
             name = "post_id",
             nullable = false
     )
-    @JsonBackReference(value = "post-likes")
+    //@JsonBackReference(value = "post-likes")
     private Post post;
 }

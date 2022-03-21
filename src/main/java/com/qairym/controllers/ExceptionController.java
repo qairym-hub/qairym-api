@@ -1,4 +1,4 @@
-package com.qairym.utils.exceptions;
+package com.qairym.controllers;
 
 import java.util.NoSuchElementException;
 
@@ -12,7 +12,7 @@ public class ExceptionController {
     @ExceptionHandler(value = IllegalArgumentException.class)
     public ResponseEntity<Object> exception(IllegalArgumentException exception) {
         return ResponseEntity.badRequest().body(
-            "Invalid identifier"
+            exception.getMessage()
         );
     }
 
@@ -22,4 +22,5 @@ public class ExceptionController {
             exception.getMessage()
         );
     }
+
 }

@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.google.common.collect.Lists;
+import com.qairym.entities.Comment;
 import com.qairym.entities.Like;
 import com.qairym.entities.Post;
 import com.qairym.entities.User;
-import com.qairym.entities.models.UserModel;
+import com.qairym.repositories.LikeRepository;
 import com.qairym.repositories.PostRepository;
 import com.qairym.repositories.UserRepository;
 
@@ -24,6 +25,7 @@ import lombok.AllArgsConstructor;
 public class UserService implements Servable<User> {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     public User save(User payload) {
@@ -40,17 +42,15 @@ public class UserService implements Servable<User> {
     @TestingOnly
     @Override
     public List<User> findAll() {
-        return (List<User>) UserModel.toModels(Lists.newArrayList(
-            this.userRepository.findAll()
-        ));
+        return Lists.newArrayList(
+                this.userRepository.findAll()
+        );
     }
 
     @Override
     public User findById(Long id) {
-        return UserModel.toModel(
-            userRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("User not found")
-            )
+        return userRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("User not found " + id)
         );
     }
 
@@ -83,7 +83,7 @@ public class UserService implements Servable<User> {
         User currentFollower = this.findById(follower);
         User currentFollowing = this.findById(following);
 
-        if (currentFollower.getFollowing().contains(currentFollowing))
+        if (findAllFollowers(following).contains(currentFollower))
             throw new IllegalArgumentException("You already followed to this account");
 
         currentFollower.getFollowing().add(currentFollowing);
@@ -92,31 +92,34 @@ public class UserService implements Servable<User> {
     }
 
     public boolean unFollow(Long follower, Long following) {
-
-        // если не убрать у обоих то не уберется подписка
-        // потом надо обсудить
         User currentFollower = this.findById(follower);
         User currentFollowing = this.findById(following);
 
         currentFollower.getFollowing().remove(currentFollowing);
-        currentFollowing.getFollowers().remove(currentFollower);
         this.userRepository.save(currentFollower);
-        this.userRepository.save(currentFollowing);
         return true;
     }
 
     ////////////////////////////////////////// Like
-    public boolean like(Long liker, Long post) {
+    public List<Like> findAllLikes(Long id) {
+        return Lists.newArrayList(
+            this.postRepository.findById(id).orElseThrow(
+                    () -> new NoSuchElementException("Post not found")
+            ).getLikes()
+        );
+    }
+
+    public Like like(Long liker, Long post) {
         User currentLiker = this.findById(liker);
         Post currentPost = this.postRepository.findById(post).orElseThrow(
                 () -> new NoSuchElementException("Post not found")
         );
         Like like = new Like(null, currentLiker, currentPost);
 
-        currentPost.getLikes().add(like);
-        this.postRepository.save(currentPost);
-        log.info(this.postRepository.findById(post).toString());
-        return true;
+        if (this.likeRepository.existsByLikerAndPost(currentLiker, currentPost))
+            throw new IllegalArgumentException("You already liked this post");
+
+        return this.likeRepository.save(like);
     }
 
     public boolean unLike(Long liker, Long post) {
@@ -124,9 +127,26 @@ public class UserService implements Servable<User> {
         Post currentPost = this.postRepository.findById(post).orElseThrow(
                 () -> new NoSuchElementException("Post not found")
         );
-        Like like = new Like(null, currentLiker, currentPost);
+        Like currentLike = this.likeRepository.findByLikerAndPost(currentLiker, currentPost);
 
-        currentPost.getLikes().remove(like);
+        this.likeRepository.delete(currentLike);
+        return true;
+    }
+
+    ////////////////////////////////////////// Comment
+    public List<Comment> findAllComments(Long id) {
+        return Lists.newArrayList(
+
+        );
+    }
+
+    public boolean comment(Long commenter, Long following) {
+
+        return true;
+    }
+
+    public boolean deleteComment(Long commenter, Long following) {
+
         return true;
     }
 

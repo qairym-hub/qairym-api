@@ -60,22 +60,29 @@ public class UserController {
     @PostMapping("/unfollow")
     public ResponseEntity<?> unFollow(@RequestParam Long follower, @RequestParam Long following) {
         return ResponseEntity.ok(
-                this.userService.unFollow(follower, following)
+            this.userService.unFollow(follower, following)
         );
     }
 
     ////////////////////////////////////////// Like
+    @GetMapping("/find/likes/{id}")
+    public ResponseEntity<?> findLikesByPostId(@PathVariable String id) {
+        return ResponseEntity.ok(
+            this.userService.findAllLikes(Long.parseLong(id))
+        );
+    }
+
     @PostMapping("/like")
     public ResponseEntity<?> like(@RequestParam String liker, @RequestParam String post) {
         return ResponseEntity.ok(
-                this.userService.like(Long.parseLong(liker), Long.parseLong(post))
+            this.userService.like(Long.parseLong(liker), Long.parseLong(post))
         );
     }
 
     @PostMapping("/unlike")
     public ResponseEntity<?> unLike(@RequestParam Long liker, @RequestParam Long post) {
         return ResponseEntity.ok(
-                this.userService.unLike(liker, post)
+            this.userService.unLike(liker, post)
         );
     }
 
