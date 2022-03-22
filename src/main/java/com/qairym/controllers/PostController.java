@@ -27,7 +27,7 @@ public class PostController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody Post payload) {
         return ResponseEntity.ok(
-                postService.save(payload)
+            this.postService.save(payload)
         );
     }
 }
