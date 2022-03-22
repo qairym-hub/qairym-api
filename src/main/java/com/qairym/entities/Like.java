@@ -1,5 +1,8 @@
 package com.qairym.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,6 +13,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "likes")
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Builder
+@Data
 public class Like {
     
     @Id
@@ -22,4 +30,12 @@ public class Like {
         nullable = false
     )
     private User liker;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "post_id",
+            nullable = false
+    )
+    //@JsonBackReference(value = "post-likes")
+    private Post post;
 }

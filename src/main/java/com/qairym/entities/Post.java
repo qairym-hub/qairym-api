@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -44,11 +45,17 @@ public class Post {
         name = "author_id",
         nullable = false
     )
-    @JsonBackReference(value = "user-posts")
+    //@JsonBackReference(value = "user-posts")
     private User author;
 
     @OneToMany(mappedBy = "post")
-    @JsonManagedReference
+    //@JsonManagedReference(value = "post-comments")
+    @JsonIgnore
     private Collection<Comment> comments;
+
+    @OneToMany(mappedBy = "post")
+    //@JsonManagedReference(value = "post-likes")
+    @JsonIgnore
+    private Collection<Like> likes;
 }
  

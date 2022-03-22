@@ -27,7 +27,11 @@ public class PostService implements Servable<Post> {
     public Post save(Post payload) {
         if (payload.getAuthor().getUserId() == null)
             throw new IllegalArgumentException("Недопустимые значения полей.");
-        
+          
+        this.userRepository.findById(payload.getAuthor().getUserId()).orElseThrow(
+            () -> new NoSuchElementException("User not found")
+        );
+
         log.info("Saving post: {} to the database", payload);
         return this.postRepository.save(payload);
     }
@@ -36,7 +40,7 @@ public class PostService implements Servable<Post> {
     @Override
     public List<Post> findAll() {
         return Lists.newArrayList(
-                this.postRepository.findAll()
+            this.postRepository.findAll()
         );
     }
 
@@ -44,7 +48,7 @@ public class PostService implements Servable<Post> {
         User author = this.userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("Пользователь не найден."));
 
         return Lists.newArrayList(
-            this.postRepository.findAllByAuthor(author)
+                this.postRepository.findAllByAuthor(author)
         );
     }
 
