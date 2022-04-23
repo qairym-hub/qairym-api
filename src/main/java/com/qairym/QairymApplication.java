@@ -24,14 +24,6 @@ public class QairymApplication {
 	}
 
 	@Bean
-	public Docket productApi() {
-		return new Docket(DocumentationType.SWAGGER_2)
-				.select()
-				.apis(RequestHandlerSelectors.any())
-				.build();
-	}
-
-	@Bean
 	CommandLineRunner run(CityRepository cityRepository) {
 		return args -> {
 			cityRepository.saveAll(
@@ -40,7 +32,8 @@ public class QairymApplication {
 						new City(null, "Нур-Султан", null),
 						new City(null, "Шымкент", null),
 						new City(null, "Усть-Cumеногорск", null),
-						new City(null, "Алматы", null)
+						new City(null, "Алматы", null),
+						new City(null, "Уральск", null)
 				))
 			);
 		};

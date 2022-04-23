@@ -55,11 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/",
-                        "/swagger-ui/**",
-                        "/api/user/find",
-                        "/api/user/save",
-                        "/login"
+                        "/**"
+
                 ).permitAll()
                 .anyRequest().authenticated();
         http.addFilter(emailAndPasswordAuthenticationFilter)
