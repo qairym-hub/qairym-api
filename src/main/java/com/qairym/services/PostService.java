@@ -4,14 +4,19 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.google.common.collect.Lists;
-import com.qairym.entities.Post;
-import com.qairym.entities.User;
+import com.qairym.entities.post.Post;
+import com.qairym.entities.post.PostPage;
+import com.qairym.entities.user.User;
 import com.qairym.repositories.PostRepository;
 import com.qairym.repositories.UserRepository;
 import com.qairym.utils.PostUtil;
 import com.qairym.utils.annotations.TestingOnly;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
@@ -37,18 +42,24 @@ public class PostService implements Servable<Post> {
     }
 
     @TestingOnly
-    @Override
-    public List<Post> findAll() {
-        return Lists.newArrayList(
-            this.postRepository.findAll()
-        );
+    public Page<Post> findAll(PostPage postPage) {
+        Sort sort = Sort.by(postPage.getSortDirection(), postPage.getSortBy());
+        Pageable pageable = PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort);
+        return this.postRepository.findAll(pageable);
     }
 
-    public List<Post> findAllByUser(Long userId) {
+    @Override
+    public List<Post> findAll() {
+        return null;
+    }
+
+    public List<Post> findAllByUser(Long userId, PostPage postPage) {
         User author = this.userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("Пользователь не найден."));
 
+        Sort sort = Sort.by(postPage.getSortDirection(), postPage.getSortBy());
+        Pageable pageable = PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort);
         return Lists.newArrayList(
-                this.postRepository.findAllByAuthor(author)
+                postRepository.findAllByAuthor(author, pageable)
         );
     }
 

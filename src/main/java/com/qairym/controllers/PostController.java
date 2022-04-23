@@ -1,11 +1,9 @@
 package com.qairym.controllers;
 
-import com.qairym.entities.Post;
+import com.qairym.entities.post.Post;
+import com.qairym.entities.post.PostPage;
 import com.qairym.services.PostService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +22,9 @@ public class PostController {
 
     @ApiOperation(value = "Retrieve all posts of a certain user by userId from a database")
     @GetMapping("/find/{userId}")
-    public ResponseEntity<?> findAllByUserId(@PathVariable String userId) throws NumberFormatException {
+    public ResponseEntity<?> findAllByUserId(@PathVariable String userId, PostPage postPage) throws NumberFormatException {
         return ResponseEntity.ok(
-            this.postService.findAllByUser(Long.parseLong(userId))
+            postService.findAllByUser(Long.parseLong(userId), postPage)
         );
     }
 
@@ -34,7 +32,7 @@ public class PostController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody Post payload) {
         return ResponseEntity.ok(
-            this.postService.save(payload)
+            postService.save(payload)
         );
     }
 }

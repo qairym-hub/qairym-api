@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import com.qairym.entities.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

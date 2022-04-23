@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.qairym.entities.post.Post;
+import com.qairym.entities.user.User;
 
 @Entity
 @Table(name = "comments")

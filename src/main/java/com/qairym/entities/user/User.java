@@ -1,4 +1,4 @@
-package com.qairym.entities;
+package com.qairym.entities.user;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -8,9 +8,12 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.qairym.entities.City;
+import com.qairym.entities.Comment;
+import com.qairym.entities.post.Post;
+import com.qairym.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

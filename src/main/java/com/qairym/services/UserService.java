@@ -7,6 +7,9 @@ import java.util.NoSuchElementException;
 
 import com.google.common.collect.Lists;
 import com.qairym.entities.*;
+import com.qairym.entities.post.Post;
+import com.qairym.entities.user.User;
+import com.qairym.entities.user.UserPage;
 import com.qairym.repositories.LikeRepository;
 import com.qairym.repositories.PostRepository;
 import com.qairym.repositories.UserRepository;
@@ -14,6 +17,10 @@ import com.qairym.repositories.UserRepository;
 import com.qairym.utils.UserUtil;
 import com.qairym.utils.annotations.TestingOnly;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -48,10 +55,10 @@ public class UserService implements Servable<User>, UserDetailsService {
     public User save(User payload) {
         if (userRepository.existsByUsername(payload.getUsername()))
             throw new IllegalArgumentException("Пользователь с таким именем уже существует.");
-          
+
         if (payload.getUsername() == null || payload.getPassword() == null)
             throw new IllegalArgumentException("Недопустимые значения полей.");
-        
+
         log.info("Saving user: {} to the database", payload);
         payload.setPassword(passwordEncoder.encode(payload.getPassword()));
         userRepository.save(payload);
@@ -64,17 +71,23 @@ public class UserService implements Servable<User>, UserDetailsService {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new NoSuchElementException("User not found")
         );
-        Role role = new Role(1L ,"ROLE_USER");
+        Role role = new Role(1L, "ROLE_USER");
         user.getRoles().add(role);
         userRepository.save(user);
     }
 
     @TestingOnly
+    public List<User> findAll(UserPage userPage) {
+        Sort sort = Sort.by(userPage.getSortDirection(), userPage.getSortBy());
+        Pageable pageable = PageRequest.of(userPage.getPageNumber(), userPage.getPageSize(), sort);
+        return Lists.newArrayList(
+                userRepository.findAll(pageable)
+        );
+    }
+
     @Override
     public List<User> findAll() {
-        return Lists.newArrayList(
-                this.userRepository.findAll()
-        );
+        return null;
     }
 
     @Override
@@ -133,9 +146,9 @@ public class UserService implements Servable<User>, UserDetailsService {
     ////////////////////////////////////////// Like
     public List<Like> findAllLikes(Long id) {
         return Lists.newArrayList(
-            this.postRepository.findById(id).orElseThrow(
-                    () -> new NoSuchElementException("Post not found")
-            ).getLikes()
+                this.postRepository.findById(id).orElseThrow(
+                        () -> new NoSuchElementException("Post not found")
+                ).getLikes()
         );
     }
 

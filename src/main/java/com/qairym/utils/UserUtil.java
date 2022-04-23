@@ -1,6 +1,6 @@
 package com.qairym.utils;
 
-import com.qairym.entities.User;
+import com.qairym.entities.user.User;
 
 public class UserUtil {
 
