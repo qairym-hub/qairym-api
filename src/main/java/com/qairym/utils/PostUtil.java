@@ -1,6 +1,6 @@
 package com.qairym.utils;
 
-import com.qairym.entities.Post;
+import com.qairym.entities.post.Post;
 
 public class PostUtil {
 

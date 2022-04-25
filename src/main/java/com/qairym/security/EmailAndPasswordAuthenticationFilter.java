@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -29,11 +30,6 @@ public class EmailAndPasswordAuthenticationFilter extends UsernamePasswordAuthen
     private final AuthenticationManager authenticationManager;
 
     private final TokenProvider tokenProvider;
-
-//    public EmailAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager, TokenProvider tokenProvider) {
-//        this.authenticationManager = authenticationManager;
-//        this.tokenProvider = tokenProvider;
-//    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -61,6 +57,17 @@ public class EmailAndPasswordAuthenticationFilter extends UsernamePasswordAuthen
         tokens.put("access_token", token);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        log.error("Logging in error");
+
+        Map<String, String> message = new HashMap<>();
+        message.put("message", "Ошибка входа");
+        response.setContentType(APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        new ObjectMapper().writeValue(response.getOutputStream(), message);
     }
 
     private LoginDto getLoginDto(HttpServletRequest request) throws IOException {

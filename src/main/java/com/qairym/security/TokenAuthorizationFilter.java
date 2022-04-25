@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,14 @@ public class TokenAuthorizationFilter extends OncePerRequestFilter {
                 error.put("error_message", e.getMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
+            } catch (TokenExpiredException e) {
+                log.error("Error logging in: {}", e.getMessage());
+
+                Map<String, String> message = new HashMap<>();
+                message.put("Токен устарел", e.getMessage());
+                response.setContentType(APPLICATION_JSON_VALUE);
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                new ObjectMapper().writeValue(response.getOutputStream(), message);
             }
         }
         filterChain.doFilter(request, response);

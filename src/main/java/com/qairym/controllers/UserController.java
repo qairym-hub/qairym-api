@@ -1,6 +1,7 @@
 package com.qairym.controllers;
 
-import com.qairym.entities.User;
+import com.qairym.entities.user.User;
+import com.qairym.entities.user.UserPage;
 import com.qairym.services.UserService;
 
 import io.swagger.annotations.Api;
@@ -19,9 +20,9 @@ public class UserController {
 
     @ApiOperation(value = "Retrieve all users from a database")
     @GetMapping("/find")
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<?> findAll(UserPage userPage) {
         return ResponseEntity.ok(
-            this.userService.findAll()
+            userService.findAll(userPage)
         );
     }
 

@@ -1,6 +1,7 @@
 package com.qairym.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.qairym.entities.post.Post;
+import com.qairym.entities.user.User;
 import lombok.*;
 
 import javax.persistence.Entity;

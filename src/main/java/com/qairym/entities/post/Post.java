@@ -1,4 +1,4 @@
-package com.qairym.entities;
+package com.qairym.entities.post;
 
 import java.sql.Date;
 import java.util.Collection;
@@ -12,10 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import com.qairym.entities.Comment;
+import com.qairym.entities.Like;
+import com.qairym.entities.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

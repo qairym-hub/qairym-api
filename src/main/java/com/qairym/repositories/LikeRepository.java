@@ -1,8 +1,8 @@
 package com.qairym.repositories;
 
 import com.qairym.entities.Like;
-import com.qairym.entities.Post;
-import com.qairym.entities.User;
+import com.qairym.entities.post.Post;
+import com.qairym.entities.user.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
