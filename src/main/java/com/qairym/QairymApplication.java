@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.qairym.entities.City;
+import com.qairym.entities.Role;
 import com.qairym.repositories.CityRepository;
 
+import com.qairym.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,7 +26,7 @@ public class QairymApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(CityRepository cityRepository) {
+	CommandLineRunner run(CityRepository cityRepository, UserService userService) {
 		return args -> {
 			cityRepository.saveAll(
 				new ArrayList<>(
@@ -36,6 +38,8 @@ public class QairymApplication {
 						new City(null, "Уральск", null)
 				))
 			);
+
+			userService.saveRole(new Role(null, "ROLE_USER"));
 		};
 	}
 }
