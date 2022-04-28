@@ -12,6 +12,7 @@ import com.qairym.entities.user.User;
 import com.qairym.entities.user.UserPage;
 import com.qairym.repositories.LikeRepository;
 import com.qairym.repositories.PostRepository;
+import com.qairym.repositories.RoleRepository;
 import com.qairym.repositories.UserRepository;
 
 import com.qairym.utils.UserUtil;
@@ -35,6 +36,8 @@ import lombok.AllArgsConstructor;
 @Slf4j
 public class UserService implements Servable<User>, UserDetailsService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
 
@@ -64,6 +67,11 @@ public class UserService implements Servable<User>, UserDetailsService {
         userRepository.save(payload);
         addRoleToUser(payload.getUsername(), "ROLE_USER");
         return userRepository.save(payload);
+    }
+
+    public Role saveRole(Role role) {
+        log.info("Saving role {} to the database", role.getName());
+        return roleRepository.save(role);
     }
 
     public void addRoleToUser(String username, String roleName) {

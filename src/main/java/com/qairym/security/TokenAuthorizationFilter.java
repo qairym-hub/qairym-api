@@ -57,6 +57,7 @@ public class TokenAuthorizationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } catch (IOException e) {
                 log.error("Error logging in: {}", e.getMessage());
+
                 response.setHeader("Error", e.getMessage());
                 response.setStatus(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
