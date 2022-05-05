@@ -30,7 +30,7 @@ public class UserController {
     @GetMapping("/find/id/{id}")
     public ResponseEntity<?> findById(@PathVariable String id) {
         return ResponseEntity.ok(
-            this.userService.findById(Long.parseLong(id))
+            userService.findById(Long.parseLong(id))
         );
     }
 
@@ -38,7 +38,7 @@ public class UserController {
     @GetMapping("/find/username/{username}")
     public ResponseEntity<?> findByUsername(@PathVariable String username) {
         return ResponseEntity.ok(
-            this.userService.findByUsername(username)
+            userService.findByUsername(username)
         );
     }
 
@@ -46,16 +46,16 @@ public class UserController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody User payload) {
         return ResponseEntity.ok(
-            this.userService.save(payload)
+            userService.save(payload)
         );
     }
 
-    ////////////////////////////////////////// Follow
+    // Follow
     @ApiOperation(value = "Retrieve followers of a certain user by id from a database")
     @GetMapping("/find/followers/{id}")
     public ResponseEntity<?> findFollowersById(@PathVariable String id) {
         return ResponseEntity.ok(
-            this.userService.findAllFollowers(Long.parseLong(id))
+            userService.findAllFollowers(Long.parseLong(id))
         );
     }
 
@@ -63,7 +63,7 @@ public class UserController {
     @PostMapping("/follow")
     public ResponseEntity<?> follow(@RequestParam Long follower, @RequestParam Long following) {
         return ResponseEntity.ok(
-            this.userService.follow(follower, following)
+            userService.follow(follower, following)
         );
     }
 
@@ -71,16 +71,16 @@ public class UserController {
     @PostMapping("/unfollow")
     public ResponseEntity<?> unFollow(@RequestParam Long follower, @RequestParam Long following) {
         return ResponseEntity.ok(
-            this.userService.unFollow(follower, following)
+            userService.unFollow(follower, following)
         );
     }
 
-    ////////////////////////////////////////// Like
+    // Like
     @ApiOperation(value = "Retrieve likes of a certain post by postId")
     @GetMapping("/find/likes/{id}")
     public ResponseEntity<?> findLikesByPostId(@PathVariable String id) {
         return ResponseEntity.ok(
-            this.userService.findAllLikes(Long.parseLong(id))
+            userService.findAllLikes(Long.parseLong(id))
         );
     }
 
@@ -88,7 +88,7 @@ public class UserController {
     @PostMapping("/like")
     public ResponseEntity<?> like(@RequestParam String liker, @RequestParam String post) {
         return ResponseEntity.ok(
-            this.userService.like(Long.parseLong(liker), Long.parseLong(post))
+            userService.like(Long.parseLong(liker), Long.parseLong(post))
         );
     }
 
@@ -96,7 +96,7 @@ public class UserController {
     @PostMapping("/unlike")
     public ResponseEntity<?> unLike(@RequestParam Long liker, @RequestParam Long post) {
         return ResponseEntity.ok(
-            this.userService.unLike(liker, post)
+            userService.unLike(liker, post)
         );
     }
 
