@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/api/user")
 @AllArgsConstructor
-@Api(value="onlinestore", description="Operations pertaining to users")
+@Api(value="qairym_api", description="Operations pertaining to users")
 public class UserController {
     private final UserService userService;
 
