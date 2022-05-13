@@ -55,7 +55,8 @@ public class EmailAndPasswordAuthenticationFilter extends UsernamePasswordAuthen
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", token);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.writeValue(response.getOutputStream(), tokens);
     }
 
     @Override
