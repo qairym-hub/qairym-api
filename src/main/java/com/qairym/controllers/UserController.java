@@ -2,14 +2,13 @@ package com.qairym.controllers;
 
 import com.qairym.entities.user.User;
 import com.qairym.entities.user.UserPage;
+import com.qairym.security.TokenProvider;
 import com.qairym.services.UserService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/user")
@@ -18,11 +17,21 @@ import lombok.AllArgsConstructor;
 public class UserController {
     private final UserService userService;
 
+    private final TokenProvider tokenProvider;
+
     @ApiOperation(value = "Retrieve all users from a database")
     @GetMapping("/find")
     public ResponseEntity<?> findAll(UserPage userPage) {
         return ResponseEntity.ok(
             userService.findAll(userPage)
+        );
+    }
+
+    @ApiOperation(value = "Operation for getting user by token")
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUser(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(
+                userService.findByUsername(tokenProvider.getUsername(token.substring("Bearer ".length())))
         );
     }
 
