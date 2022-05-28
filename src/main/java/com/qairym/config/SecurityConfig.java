@@ -63,7 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/user/save",
                         "/login",
                         "/api/auth/google",
-                        "/api/post/find"
+//                        "/api/post/find",
+                        "/**"
                 ).permitAll()
                 .anyRequest().authenticated();
         http.addFilter(emailAndPasswordAuthenticationFilter)
