@@ -19,10 +19,16 @@ public class PostController {
 
     @ApiOperation(value = "Retrieve all posts from a database")
     @GetMapping("/find")
-    public ResponseEntity<List<Post>> findAll(PostPage postPage) {
-        return ResponseEntity.ok(
-            postService.findAll(postPage)
-        );
+    public ResponseEntity<List<Post>> findAll(@RequestParam(required = false) String search, PostPage postPage) {
+        if (search != null) {
+            return ResponseEntity.ok(
+                    postService.findAllBySearch(search, postPage)
+            );
+        } else {
+            return ResponseEntity.ok(
+                    postService.findAll(postPage)
+            );
+        }
     }
 
     @ApiOperation(value = "Retrieve post by id from database")

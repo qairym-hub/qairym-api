@@ -2,6 +2,8 @@ package com.qairym.services;
 
 import com.google.common.collect.Lists;
 import com.qairym.dto.FollowersDto;
+import com.qairym.dto.FollowingsDto;
+import com.qairym.dto.LikesDto;
 import com.qairym.entities.Comment;
 import com.qairym.entities.Like;
 import com.qairym.entities.Role;
@@ -127,15 +129,27 @@ public class UserService implements Servable<User>, UserDetailsService {
 
     // Follow
     public FollowersDto findAllFollowers(Long id) {
+        List<User> followers = userRepository.findAllByFollowing(findById(id));
         return new FollowersDto(
-                userRepository.findAllByFollowing(findById(id)).size(),
-                userRepository.findAllByFollowing(findById(id))
+                followers.size(),
+                followers
         );
-
     }
 
     public Integer findNumberOfFollowers(Long id) {
         return userRepository.findAllByFollowing(findById(id)).size();
+    }
+
+    public FollowingsDto findAllFollowings(Long id) {
+        List<User> followings = userRepository.findUsersByFollowersContaining(findById(id));
+        return new FollowingsDto(
+                followings.size(),
+                followings
+        );
+    }
+
+    public Integer findNumberOfFollowings(Long id) {
+        return userRepository.findUsersByFollowersContaining(findById(id)).size();
     }
 
     public boolean follow(Long follower, Long following) {
@@ -161,11 +175,15 @@ public class UserService implements Servable<User>, UserDetailsService {
     }
 
     // Like
-    public List<Like> findAllLikes(Long id) {
-        return Lists.newArrayList(
+    public LikesDto findAllLikes(Long id) {
+        List<Like> likes = Lists.newArrayList(
                 postRepository.findById(id).orElseThrow(
                         () -> new NoSuchElementException("Post not found")
                 ).getLikes()
+        );
+        return new LikesDto(
+                likes.size(),
+                likes
         );
     }
 

@@ -74,6 +74,20 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "Retrieve followings of a certain user by id from a database")
+    @GetMapping("/find/followings/{id}")
+    public ResponseEntity<?> findFollowingsById(@PathVariable String id, @RequestParam(required = false) String info) {
+        if (info != null) {
+            return ResponseEntity.ok(
+                    userService.findNumberOfFollowings(Long.parseLong(id))
+            );
+        } else {
+            return ResponseEntity.ok(
+                    userService.findAllFollowings(Long.parseLong(id))
+            );
+        }
+    }
+
     @ApiOperation(value = "Follow a certain user by id")
     @PostMapping("/follow")
     public ResponseEntity<?> follow(@RequestParam Long follower, @RequestParam Long following) {

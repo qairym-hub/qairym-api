@@ -40,9 +40,15 @@ public class PostService implements Servable<Post> {
     public List<Post> findAll(PostPage postPage) {
         Sort sort = Sort.by(postPage.getSortDirection(), postPage.getSortBy());
         Pageable pageable = PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort);
-        Page<Post> pageResult = postRepository.findAll(pageable);
-//        return pageResult.toList();
         return postRepository.findAll(
+                PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort)
+        ).toList();
+    }
+
+    public List<Post> findAllBySearch(String search, PostPage postPage) {
+        Sort sort = Sort.by(postPage.getSortDirection(), postPage.getSortBy());
+        Pageable pageable = PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort);
+        return postRepository.findPostsByTextContainsIgnoreCase(search,
                 PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort)
         ).toList();
     }

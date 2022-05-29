@@ -1,5 +1,6 @@
 package com.qairym.repositories;
 
+import com.qairym.entities.post.Post;
 import com.qairym.entities.user.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -19,5 +20,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     boolean existsByUsername(String username);
 
     List<User> findAllByFollowing(User following);
+
+    List<User> findUsersByFollowersContaining(User follower);
 
 }
