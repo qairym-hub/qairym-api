@@ -37,3 +37,4 @@ public class City {
     @JsonManagedReference(value = "city-users")
     private Collection<User> users;
 }
+
