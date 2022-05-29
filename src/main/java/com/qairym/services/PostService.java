@@ -14,8 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -39,16 +38,16 @@ public class PostService implements Servable<Post> {
 
     public List<Post> findAll(PostPage postPage) {
         Sort sort = Sort.by(postPage.getSortDirection(), postPage.getSortBy());
-        Pageable pageable = PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort);
-        return postRepository.findAll(
+        List<Post> posts = new ArrayList<>(postRepository.findAll(
                 PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort)
-        ).toList();
+        ).toList());
+        Collections.reverse(posts);
+        return posts;
     }
 
     public List<Post> findAllBySearch(String search, PostPage postPage) {
         Sort sort = Sort.by(postPage.getSortDirection(), postPage.getSortBy());
-        Pageable pageable = PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort);
-        return postRepository.findPostsByTextContainsIgnoreCase(search,
+        return postRepository.findPostsByTextContainsIgnoreCaseOrderByPostIdDesc(search,
                 PageRequest.of(postPage.getPageNumber(), postPage.getPageSize(), sort)
         ).toList();
     }

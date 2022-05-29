@@ -14,6 +14,6 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
 
     Page<Post> findByAuthor(User author, Pageable pageable);
 
-    Page<Post> findPostsByTextContainsIgnoreCase(String text, Pageable pageable);
+    Page<Post> findPostsByTextContainsIgnoreCaseOrderByPostIdDesc(String text, Pageable pageable);
 
 }
