@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -32,8 +34,13 @@ public class PostService implements Servable<Post> {
                 () -> new NoSuchElementException("User not found")
         );
 
-        log.info("Saving post: {} to the database", payload);
-        return this.postRepository.save(payload);
+        Post post = new Post();
+        post.setTitle(payload.getTitle());
+        post.setText(payload.getText());
+        post.setCreatedAt(Date.valueOf(LocalDate.now()));
+        post.setAuthor(payload.getAuthor());
+        log.info("Saving post: {} to the database", post);
+        return this.postRepository.save(post);
     }
 
     public List<Post> findAll(PostPage postPage) {
