@@ -1,6 +1,7 @@
 package com.qairym.services;
 
 import com.google.common.collect.Lists;
+import com.qairym.dto.FollowersDto;
 import com.qairym.entities.Comment;
 import com.qairym.entities.Like;
 import com.qairym.entities.Role;
@@ -55,7 +56,7 @@ public class UserService implements Servable<User>, UserDetailsService {
 
     @Override
     public User save(User payload) {
-        if (userRepository.existsByUsername(payload.getUsername())){
+        if (userRepository.existsByUsername(payload.getUsername())) {
             throw new IllegalArgumentException("Пользователь с таким именем уже существует.");
         }
 
@@ -125,10 +126,12 @@ public class UserService implements Servable<User>, UserDetailsService {
     }
 
     // Follow
-    public List<User> findAllFollowers(Long id) {
-        return Lists.newArrayList(
+    public FollowersDto findAllFollowers(Long id) {
+        return new FollowersDto(
+                userRepository.findAllByFollowing(findById(id)).size(),
                 userRepository.findAllByFollowing(findById(id))
         );
+
     }
 
     public Integer findNumberOfFollowers(Long id) {
@@ -139,7 +142,7 @@ public class UserService implements Servable<User>, UserDetailsService {
         User currentFollower = this.findById(follower);
         User currentFollowing = this.findById(following);
 
-        if (findAllFollowers(following).contains(currentFollower)) {
+        if (findAllFollowers(following).getFollowers().contains(currentFollower)) {
             throw new IllegalArgumentException("You already followed to this account");
         }
 
@@ -171,6 +174,7 @@ public class UserService implements Servable<User>, UserDetailsService {
                 () -> new NoSuchElementException("Post not found")
         ).getLikes().size();
     }
+
     public Like like(Long liker, Long post) {
         User currentLiker = this.findById(liker);
         Post currentPost = postRepository.findById(post).orElseThrow(
