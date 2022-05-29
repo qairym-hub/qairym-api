@@ -51,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.formLogin()
                 .disable()
+                .cors()
+                .and()
                 .httpBasic()
                 .disable()
                 .authorizeRequests()

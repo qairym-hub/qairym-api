@@ -131,6 +131,10 @@ public class UserService implements Servable<User>, UserDetailsService {
         );
     }
 
+    public Integer findNumberOfFollowers(Long id) {
+        return userRepository.findAllByFollowing(findById(id)).size();
+    }
+
     public boolean follow(Long follower, Long following) {
         User currentFollower = this.findById(follower);
         User currentFollowing = this.findById(following);
@@ -162,6 +166,11 @@ public class UserService implements Servable<User>, UserDetailsService {
         );
     }
 
+    public Integer findNumberOfLikes(Long id) {
+        return postRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Post not found")
+        ).getLikes().size();
+    }
     public Like like(Long liker, Long post) {
         User currentLiker = this.findById(liker);
         Post currentPost = postRepository.findById(post).orElseThrow(
