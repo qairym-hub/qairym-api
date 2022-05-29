@@ -31,7 +31,7 @@ public class TokenProvider {
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + (10 * 60 * 1000)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + (20 * 60 * 1000)))
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
     }
